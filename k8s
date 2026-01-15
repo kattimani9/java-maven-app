@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javamaven-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: javamaven-app
+  template:
+    metadata:
+      labels:
+        app: javamaven-app
+    spec:
+      containers:
+      - name: javamaven-container
+        image: kattimani/javamaven-pipeline:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javamaven-service
+spec:
+  type: NodePort
+  selector:
+    app: javamaven-app
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001
